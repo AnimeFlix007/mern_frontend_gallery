@@ -57,18 +57,18 @@ export const userLogin = createAsyncThunk(
   }
 );
 
-// export const userLogout = createAsyncThunk(
-//   "users/logout",
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const res = await axios.post("http://localhost:5000/api/users/logout")
-//       localStorage.removeItem("userInfo")
-//       return res.data
-//     } catch (error) {
-//       return rejectWithValue(error?.response?.data);
-//     }
-//   }
-// );
+export const userLogout = createAsyncThunk(
+  "users/logout",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/users/logout")
+      localStorage.removeItem("userInfo")
+      return res.data
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 const userLoggedIn = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
@@ -131,23 +131,23 @@ const userSlice = createSlice({
       state.error.message = action?.payload?.message;
       state.error.type = "error";
     },
-    // [userLogout.pending]: (state, action) => {
-    //   state.loading = true;
-    //   state.error = initialError;
-    // },
-    // [userLogout.fulfilled]: (state, action) => {
-    //   state.loading = false;
-    //   state.user = null;
-    //   state.error.open = true;
-    //   state.error.message = action?.payload?.message;
-    //   state.isLoggedIn = false
-    // },
-    // [userLogout.rejected]: (state, action) => {
-    //   state.loading = false;
-    //   state.error.open = true;
-    //   state.error.message = action?.payload?.message;
-    //   state.error.type = "error";
-    // },
+    [userLogout.pending]: (state, action) => {
+      state.loading = true;
+      state.error = initialError;
+    },
+    [userLogout.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.user = null;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+      state.isLoggedIn = false
+    },
+    [userLogout.rejected]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+      state.error.type = "error";
+    },
   },
 });
 
