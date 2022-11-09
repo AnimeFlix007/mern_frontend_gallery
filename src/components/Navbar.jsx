@@ -15,6 +15,8 @@ import { MdAccountCircle } from "react-icons/md";
 import UploadImageModal from "./uploadImageModal";
 import { Container } from "@mui/system";
 import Progress from "../utils/error/ProgressBar";
+import { BsPersonCheckFill } from "react-icons/bs";
+import { SlLogout } from "react-icons/sl";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -102,8 +104,14 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={verifyAccountHandler}>Verify Account</MenuItem>
-            <MenuItem onClick={logoutHandler}>LogOut</MenuItem>
+            <MenuItem onClick={verifyAccountHandler}>
+              <BsPersonCheckFill style={{ marginRight: "9px" }} />
+              Verify Account
+            </MenuItem>
+            <MenuItem onClick={logoutHandler}>
+              <SlLogout style={{ marginRight: "9px" }} />
+              LogOut
+            </MenuItem>
           </Menu>
         </div>
       </Toolbar>

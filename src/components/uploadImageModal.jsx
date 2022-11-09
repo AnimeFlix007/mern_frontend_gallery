@@ -24,7 +24,7 @@ export default function UploadImageModal({ openModal, setOpenModal }) {
   const handleClose = () => setOpenModal(false);
   const [file, setFile] = React.useState(null)
   const dispatch = useDispatch()
-  const { image, error, loading } = useSelector(store => store.gallery)
+  const { image, loading } = useSelector(store => store.gallery)
   const fileSelectedHandler = (e) => {
     setFile(e.target.files[0])
   }

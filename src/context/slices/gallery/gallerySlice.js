@@ -25,7 +25,7 @@ export const uploadImage = createAsyncThunk(
 
 export const deleteImage = createAsyncThunk(
   "gallery/delete",
-  async (image, { rejectWithValue }) => {
+  async (imageId, { rejectWithValue }) => {
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -33,7 +33,7 @@ export const deleteImage = createAsyncThunk(
       withCredentials: true
     };
     try {
-      const res = await axios.delete("http://localhost:5000/api/gallery/", config);
+      const res = await axios.delete(`http://localhost:5000/api/gallery/${imageId}`, config);
       return res.data;
     } catch (error) {
       if (!error && !error?.response) {
@@ -115,6 +115,20 @@ const gallerySlice = createSlice({
       state.images = action.payload.images;
     },
     [getAllImages.rejected]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.type = "error";
+      state.error.message = action?.payload?.message;
+    },
+    [deleteImage.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteImage.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+    },
+    [deleteImage.rejected]: (state, action) => {
       state.loading = false;
       state.error.open = true;
       state.error.type = "error";

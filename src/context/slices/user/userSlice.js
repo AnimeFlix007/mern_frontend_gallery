@@ -46,6 +46,7 @@ export const userLogin = createAsyncThunk(
         lastName: res.data.user.lastName,
         email: res.data.user.email,
         gallery: res.data.user.gallery,
+        isVerified: res.data.user.isAccountVerified,
         id: res.data.user._id,
         token: res.data.token,
       };
@@ -74,6 +75,18 @@ export const userLogout = createAsyncThunk(
     }
   }
 );
+
+// export const userVerificationMail = createAsyncThunk(
+//   "users/verifyMail",
+//   async (payload, { rejectWithValue }) => {
+//     try {
+//       const res = await axios.post("http://localhost:5000/api/users/send-verification-mail")
+//       return res.data
+//     } catch (error) {
+//       return rejectWithValue(error?.response?.data);
+//     }
+//   }
+// );
 
 const userLoggedIn = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
