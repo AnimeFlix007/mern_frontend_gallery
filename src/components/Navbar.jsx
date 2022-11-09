@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout } from "../context/slices/user/userSlice";
+import { userLogout, userVerificationMail } from "../context/slices/user/userSlice";
 import { BiImageAdd } from "react-icons/bi";
 import { MdAccountCircle } from "react-icons/md";
 import UploadImageModal from "./uploadImageModal";
@@ -17,10 +17,12 @@ import { Container } from "@mui/system";
 import Progress from "../utils/error/ProgressBar";
 import { BsPersonCheckFill } from "react-icons/bs";
 import { SlLogout } from "react-icons/sl";
+import axios from "axios";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((store) => store.gallery);
+  const { user } = useSelector((store) => store.users);
   const images = JSON.parse(localStorage.getItem("userGallery"));
   const [openModal, setOpenModal] = useState(false);
   function openModalHandler() {
@@ -39,7 +41,9 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const verifyAccountHandler = () => {};
+  const verifyAccountHandler = () => {
+    dispatch(userVerificationMail(user))
+  };
 
   return (
     <AppBar sx={{ backgroundColor: "white", boxShadow: "0" }} position="static">
@@ -106,7 +110,7 @@ const Navbar = () => {
           >
             <MenuItem onClick={verifyAccountHandler}>
               <BsPersonCheckFill style={{ marginRight: "9px" }} />
-              Verify Account
+              {!user?.isVerified ? 'Verify Account' : "Account Verified"}
             </MenuItem>
             <MenuItem onClick={logoutHandler}>
               <SlLogout style={{ marginRight: "9px" }} />

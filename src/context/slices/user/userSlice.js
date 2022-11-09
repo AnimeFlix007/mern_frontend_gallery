@@ -3,13 +3,13 @@ import axios from "axios";
 
 export const userRegister = createAsyncThunk(
   "users/register",
-  async (user, { rejectWithValue}) => {
+  async (user, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true
+        withCredentials: true,
       };
       const res = await axios.post(
         "http://localhost:5000/api/users/register",
@@ -34,7 +34,7 @@ export const userLogin = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true
+        withCredentials: true,
       };
       const res = await axios.post(
         "http://localhost:5000/api/users/login",
@@ -65,28 +65,48 @@ export const userLogin = createAsyncThunk(
 export const userLogout = createAsyncThunk(
   "users/logout",
   async (payload, { rejectWithValue }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
     try {
-      const res = await axios.post("http://localhost:5000/api/users/logout")
-      localStorage.removeItem("userInfo")
-      localStorage.removeItem("userGallery")
-      return res.data
+      const res = await axios.post(
+        "http://localhost:5000/api/users/logout",
+        payload,
+        config
+      );
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("userGallery");
+      return res.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
   }
 );
 
-// export const userVerificationMail = createAsyncThunk(
-//   "users/verifyMail",
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const res = await axios.post("http://localhost:5000/api/users/send-verification-mail")
-//       return res.data
-//     } catch (error) {
-//       return rejectWithValue(error?.response?.data);
-//     }
-//   }
-// );
+export const userVerificationMail = createAsyncThunk(
+  "users/verifyMail",
+  async (payload, { rejectWithValue }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/users/send-verification-mail",
+        payload,
+        config
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
 const userLoggedIn = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
@@ -105,7 +125,7 @@ const userSlice = createSlice({
     error: initialError,
     user: userLoggedIn,
     registered: false,
-    isLoggedIn: false
+    isLoggedIn: false,
   },
   reducers: {
     removeAlert(state, action) {
@@ -122,7 +142,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.error.open = true;
       state.error.message = action?.payload?.message;
-      state.registered = true
+      state.registered = true;
     },
     [userRegister.rejected]: (state, action) => {
       state.loading = false;
@@ -141,7 +161,7 @@ const userSlice = createSlice({
       state.user = action.payload.user;
       state.error.open = true;
       state.error.message = action?.payload?.message;
-      state.isLoggedIn = true
+      state.isLoggedIn = true;
     },
     [userLogin.rejected]: (state, action) => {
       state.loading = false;
@@ -158,9 +178,24 @@ const userSlice = createSlice({
       state.user = null;
       state.error.open = true;
       state.error.message = action?.payload?.message;
-      state.isLoggedIn = false
+      state.isLoggedIn = false;
     },
     [userLogout.rejected]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+      state.error.type = "error";
+    },
+    [userVerificationMail.pending]: (state, action) => {
+      state.loading = true;
+      state.error = initialError;
+    },
+    [userVerificationMail.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+    },
+    [userVerificationMail.rejected]: (state, action) => {
       state.loading = false;
       state.error.open = true;
       state.error.message = action?.payload?.message;
