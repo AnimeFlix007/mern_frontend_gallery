@@ -9,7 +9,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogout, userVerificationMail } from "../context/slices/user/userSlice";
+import {
+  userLogout,
+  userVerificationMail,
+} from "../context/slices/user/userSlice";
 import { BiImageAdd } from "react-icons/bi";
 import { MdAccountCircle } from "react-icons/md";
 import UploadImageModal from "./uploadImageModal";
@@ -42,7 +45,7 @@ const Navbar = () => {
   };
 
   const verifyAccountHandler = () => {
-    dispatch(userVerificationMail(user))
+    dispatch(userVerificationMail(user));
   };
 
   return (
@@ -108,10 +111,17 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={verifyAccountHandler}>
-              <BsPersonCheckFill style={{ marginRight: "9px" }} />
-              {!user?.isVerified ? 'Verify Account' : "Account Verified"}
-            </MenuItem>
+            {!user?.isVerified ? (
+              <MenuItem onClick={verifyAccountHandler}>
+                <BsPersonCheckFill style={{ marginRight: "9px" }} />
+                Verify Account
+              </MenuItem>
+            ) : (
+              <MenuItem>
+                <BsPersonCheckFill style={{ marginRight: "9px" }} />
+                Account Verified
+              </MenuItem>
+            )}
             <MenuItem onClick={logoutHandler}>
               <SlLogout style={{ marginRight: "9px" }} />
               LogOut

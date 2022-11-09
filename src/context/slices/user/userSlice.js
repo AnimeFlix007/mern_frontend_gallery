@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Router } from "react-router-dom";
 
 export const userRegister = createAsyncThunk(
   "users/register",
@@ -108,6 +109,38 @@ export const userVerificationMail = createAsyncThunk(
   }
 );
 
+export const userVerify = createAsyncThunk(
+  "users/userVerify",
+  async (token, { rejectWithValue }) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    };
+    try {
+      const res = await axios.post(
+        `http://localhost:5000/api/users/verify-account`,
+        { token },
+        config
+      );
+      const data = {
+        firstName: res.data.user.firstName,
+        lastName: res.data.user.lastName,
+        email: res.data.user.email,
+        gallery: res.data.user.gallery,
+        isVerified: res.data.user.isAccountVerified,
+        id: res.data.user._id,
+        token: res.data.token,
+      };
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 const userLoggedIn = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
@@ -196,6 +229,21 @@ const userSlice = createSlice({
       state.error.message = action?.payload?.message;
     },
     [userVerificationMail.rejected]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+      state.error.type = "error";
+    },
+    [userVerify.pending]: (state, action) => {
+      state.loading = true;
+      state.error = initialError;
+    },
+    [userVerify.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.error.open = true;
+      state.error.message = action?.payload?.message;
+    },
+    [userVerify.rejected]: (state, action) => {
       state.loading = false;
       state.error.open = true;
       state.error.message = action?.payload?.message;

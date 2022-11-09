@@ -11,8 +11,9 @@ const Home = () => {
   const [imgs, setImages] = useState(
     JSON.parse(localStorage.getItem("userGallery"))
   );
-
   const { image, images } = useSelector((store) => store.gallery);
+  const { user } = useSelector((store) => store.users);
+  console.log("veveveveveve",user.isVerified);
   const dispatch = useDispatch();
   useEffect(() => {
     setImages(JSON.parse(localStorage.getItem("userGallery")));
