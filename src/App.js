@@ -1,12 +1,14 @@
 import React from "react";
 import Router from "./router/Router";
-import Alert from "./utils/error/Alert";
+import UserAlert from "./utils/error/Alert";
+import GalleryAlert from "./utils/error/GalleryAlert";
 
 function App() {
   return (
     <React.Fragment>
       <Router />
-      <Alert />
+      <UserAlert />
+      <GalleryAlert />
     </React.Fragment>
   );
 }

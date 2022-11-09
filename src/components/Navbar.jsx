@@ -1,20 +1,115 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import { userLogout } from '../context/slices/user/userSlice'
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogout } from "../context/slices/user/userSlice";
+import { BiImageAdd } from "react-icons/bi";
+import { MdAccountCircle } from "react-icons/md";
+import UploadImageModal from "./uploadImageModal";
+import { Container } from "@mui/system";
+import Progress from "../utils/error/ProgressBar";
 
 const Navbar = () => {
-  const dispatch = useDispatch()
-  function logoutHandler() {
-    dispatch(userLogout())
+  const dispatch = useDispatch();
+  const { loading } = useSelector((store) => store.gallery);
+  const images = JSON.parse(localStorage.getItem("userGallery"));
+  const [openModal, setOpenModal] = useState(false);
+  function openModalHandler() {
+    setOpenModal((prev) => !prev);
   }
-  return (
-    <div>
-      <div className="logo"></div>
-      <div className="btn">
-        <button onClick={logoutHandler}>logout</button>
-      </div>
-    </div>
-  )
-}
+  function logoutHandler() {
+    dispatch(userLogout());
+  }
+  const [anchorEl, setAnchorEl] = useState(null);
 
-export default Navbar
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const verifyAccountHandler = () => {};
+
+  return (
+    <AppBar sx={{ backgroundColor: "white", boxShadow: "0" }} position="static">
+      {loading && <Progress />}
+      <Toolbar>
+        <Container
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: "75vw",
+            margin: "1.9rem 0",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="div"
+            sx={{ flexGrow: 1, color: "black" }}
+          >
+            Media Liberary
+          </Typography>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, color: "black" }}
+          >
+            {images?.length} Images
+          </Typography>
+        </Container>
+        <Button
+          style={{
+            backgroundColor: "rgba(196, 45, 238, 0.8)",
+            color: "white",
+          }}
+          onClick={openModalHandler}
+        >
+          <BiImageAdd size={20} />
+          Upload Image
+        </Button>
+        <div>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="inherit"
+          >
+            <MdAccountCircle style={{ color: "black" }} />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={verifyAccountHandler}>Verify Account</MenuItem>
+            <MenuItem onClick={logoutHandler}>LogOut</MenuItem>
+          </Menu>
+        </div>
+      </Toolbar>
+      <UploadImageModal openModal={openModal} setOpenModal={setOpenModal} />
+    </AppBar>
+  );
+};
+
+export default Navbar;

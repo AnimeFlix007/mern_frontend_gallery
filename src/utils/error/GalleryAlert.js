@@ -2,16 +2,16 @@ import { Snackbar } from "@mui/material";
 import React from "react";
 import MuiAlert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
-import { userActionns } from "../../context/slices/user/userSlice";
+import { galleryActions } from "../../context/slices/gallery/gallerySlice";
 
 const Alert = () => {
   const dispatch = useDispatch()
-  const { open, message, type } = useSelector((store) => store.users.error);
+  const { open, message, type } = useSelector((store) => store.gallery.error);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    dispatch(userActionns.removeAlert())
+    dispatch(galleryActions.gremoveAlert())
   };
   return (
     <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>

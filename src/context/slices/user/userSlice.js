@@ -9,6 +9,7 @@ export const userRegister = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true
       };
       const res = await axios.post(
         "http://localhost:5000/api/users/register",
@@ -33,6 +34,7 @@ export const userLogin = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true
       };
       const res = await axios.post(
         "http://localhost:5000/api/users/login",
@@ -43,10 +45,12 @@ export const userLogin = createAsyncThunk(
         firstName: res.data.user.firstName,
         lastName: res.data.user.lastName,
         email: res.data.user.email,
+        gallery: res.data.user.gallery,
         id: res.data.user._id,
         token: res.data.token,
       };
       localStorage.setItem("userInfo", JSON.stringify(data));
+      localStorage.setItem("userGallery", JSON.stringify(data.gallery));
       return res.data;
     } catch (error) {
       if (!error && !error?.response) {
@@ -63,6 +67,7 @@ export const userLogout = createAsyncThunk(
     try {
       const res = await axios.post("http://localhost:5000/api/users/logout")
       localStorage.removeItem("userInfo")
+      localStorage.removeItem("userGallery")
       return res.data
     } catch (error) {
       return rejectWithValue(error?.response?.data);
