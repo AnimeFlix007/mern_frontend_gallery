@@ -11,7 +11,7 @@ export const uploadImage = createAsyncThunk(
         },
         withCredentials: true
       };
-      const res = await axios.post("https://galleryanimix-backend.onrender.com/api/gallery/", image, config);
+      const res = await axios.post("https://animixgallerybackend.herokuapp.com/api/gallery/", image, config);
       console.log("ressss",res.data);
       return res.data;
     } catch (error) {
@@ -33,7 +33,7 @@ export const deleteImage = createAsyncThunk(
       withCredentials: true
     };
     try {
-      const res = await axios.delete(`https://galleryanimix-backend.onrender.com/api/gallery/${imageId}`, config);
+      const res = await axios.delete(`https://animixgallerybackend.herokuapp.com/api/gallery/${imageId}`, config);
       return res.data;
     } catch (error) {
       if (!error && !error?.response) {
@@ -54,7 +54,7 @@ export const getAllImages = createAsyncThunk(
       withCredentials: true
     };
     try {
-      const res = await axios.get("https://galleryanimix-backend.onrender.com/api/users/getallphotos", config);
+      const res = await axios.get("https://animixgallerybackend.herokuapp.com/api/users/getallphotos", config);
       localStorage.setItem("userGallery", JSON.stringify(res.data.images));
       return res.data;
     } catch (error) {
