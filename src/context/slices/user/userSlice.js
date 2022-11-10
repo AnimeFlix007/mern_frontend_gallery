@@ -12,7 +12,7 @@ export const userRegister = createAsyncThunk(
         withCredentials: true,
       };
       const res = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "https://mern-gallery-anime-backend.onrender.com/api/users/register",
         user,
         config
       );
@@ -37,7 +37,7 @@ export const userLogin = createAsyncThunk(
         withCredentials: true,
       };
       const res = await axios.post(
-        "http://localhost:5000/api/users/login",
+        "https://mern-gallery-anime-backend.onrender.com/api/users/login",
         user,
         config
       );
@@ -73,7 +73,7 @@ export const userLogout = createAsyncThunk(
     };
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users/logout",
+        "https://mern-gallery-anime-backend.onrender.com/api/users/logout",
         payload,
         config
       );
@@ -97,7 +97,7 @@ export const userVerificationMail = createAsyncThunk(
     };
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/users/send-verification-mail",
+        "https://mern-gallery-anime-backend.onrender.com/api/users/send-verification-mail",
         payload,
         config
       );
@@ -119,7 +119,7 @@ export const userVerify = createAsyncThunk(
     };
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/users/verify-account`,
+        `https://mern-gallery-anime-backend.onrender.com/api/users/verify-account`,
         { token },
         config
       );
