@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllImages } from "../../context/slices/gallery/gallerySlice";
 import NoImages from "../NoImages";
-import Page404 from "../Page404";
 import ImageContainer from "./ImageContainer";
 
 const Home = () => {

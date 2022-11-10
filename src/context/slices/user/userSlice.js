@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Router } from "react-router-dom";
 
 export const userRegister = createAsyncThunk(
   "users/register",
@@ -88,7 +87,7 @@ export const userLogout = createAsyncThunk(
 );
 
 export const userVerificationMail = createAsyncThunk(
-  "users/verifyMail",
+  "users/userVerificationMail",
   async (payload, { rejectWithValue }) => {
     const config = {
       headers: {
@@ -119,7 +118,7 @@ export const userVerify = createAsyncThunk(
       withCredentials: true,
     };
     try {
-      const res = await axios.post(
+      const res = await axios.put(
         `http://localhost:5000/api/users/verify-account`,
         { token },
         config
@@ -131,7 +130,6 @@ export const userVerify = createAsyncThunk(
         gallery: res.data.user.gallery,
         isVerified: res.data.user.isAccountVerified,
         id: res.data.user._id,
-        token: res.data.token,
       };
       localStorage.setItem("userInfo", JSON.stringify(data));
       return res.data;
@@ -240,6 +238,7 @@ const userSlice = createSlice({
     },
     [userVerify.fulfilled]: (state, action) => {
       state.loading = false;
+      state.user = action.payload.user
       state.error.open = true;
       state.error.message = action?.payload?.message;
     },

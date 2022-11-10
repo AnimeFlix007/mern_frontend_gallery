@@ -7,7 +7,7 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   userLogout,
@@ -24,6 +24,7 @@ import axios from "axios";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const [loggedInuser, setLoggedUser] = useState(null)
   const { loading } = useSelector((store) => store.gallery);
   const { user } = useSelector((store) => store.users);
   const images = JSON.parse(localStorage.getItem("userGallery"));
@@ -47,6 +48,10 @@ const Navbar = () => {
   const verifyAccountHandler = () => {
     dispatch(userVerificationMail(user));
   };
+
+  useEffect(()=>{
+    setLoggedUser(JSON.parse(localStorage.getItem("userInfo")))
+  },[user])
 
   return (
     <AppBar sx={{ backgroundColor: "white", boxShadow: "0" }} position="static">
@@ -111,7 +116,7 @@ const Navbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            {!user?.isVerified ? (
+            {!loggedInuser?.isVerified ? (
               <MenuItem onClick={verifyAccountHandler}>
                 <BsPersonCheckFill style={{ marginRight: "9px" }} />
                 Verify Account

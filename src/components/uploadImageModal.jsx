@@ -7,6 +7,7 @@ import { Container } from '@mui/system';
 import { Input } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllImages, uploadImage } from '../context/slices/gallery/gallerySlice';
+import '../styles/upload-form.css'
 
 const style = {
   position: 'absolute',
@@ -58,10 +59,10 @@ export default function UploadImageModal({ openModal, setOpenModal }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Upload New Images
           </Typography>
-          <Container>
-            <form onSubmit={fileUploadHandler}>
+          <Container style={{ border: "1px black dotted" }} >
+            <form className='upload-form' onSubmit={fileUploadHandler}>
               <Input type='file' onChange={fileSelectedHandler} />
-              <button type='submit'>Upload</button>
+              <Button variant="contained" type='submit'>Upload</Button>
             </form>
           </Container>
         </Box>

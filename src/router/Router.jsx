@@ -5,6 +5,7 @@ import LoginPage from "../pages/auth/LoginPage";
 import RegisterPage from "../pages/auth/RegisterPage";
 import VerifyPage from "../pages/auth/VerifyPage";
 import HomePage from "../pages/home/HomePage";
+import Page404 from "../pages/Page404";
 
 const Router = () => {
   const { user } = useSelector((store) => store.users);
@@ -28,6 +29,7 @@ const Router = () => {
           !user?.isVerified ? <VerifyPage /> : <Navigate to={"/"} replace />
         }
       />
+      <Route path="*" element={<Page404 />} />
     </Routes>
   );
 };
