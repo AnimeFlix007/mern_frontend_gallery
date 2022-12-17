@@ -8,6 +8,7 @@ import { Input } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllImages, uploadImage } from '../context/slices/gallery/gallerySlice';
 import '../styles/upload-form.css'
+import PreviewImage from '../utils/PreviewImage';
 
 const style = {
   position: 'absolute',
@@ -61,6 +62,7 @@ export default function UploadImageModal({ openModal, setOpenModal }) {
           </Typography>
           <Container style={{ border: "1px black dotted" }} >
             <form className='upload-form' onSubmit={fileUploadHandler}>
+              {file && <PreviewImage file={file} />}
               <Input type='file' onChange={fileSelectedHandler} />
               <Button variant="contained" type='submit'>Upload</Button>
             </form>
